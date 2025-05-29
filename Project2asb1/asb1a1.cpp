@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <list>
 #include <string>
 #include <limits>
@@ -9,14 +9,22 @@
 using namespace std;
 int getIntegerInput(const string& prompt);
 
-// class animal отвечает за вид,вохраст,ВРЕМЯ С РОЖДЕНИЯ И ТД(Характеристики животного
+// Класс Animal (Животное)
+    //Характеристики:
+
+        //Имя, возраст, вес
+        //Климатическая зона(пустыня, лес, арктика, океан)
+        //Тип питания(хищник / травоядное)
+        //Пол(самец / самка)
+        //Состояние здоровья
+        //Дни с рождения и с последней проверки
 class Animal {
 public:
     string name;
     int age, weight;
-    enum Climate { DESERT, FOREST, ARCTIC, OCEAN } climate;
+    enum Climate { DESERT, FOREST, ARCTIC, OCEAN } climate;  //Климатическая зона(пустыня, лес, арктика, океан)
     bool isCarnivore;
-    enum Gender { MALE, FEMALE } gender;
+    enum Gender { MALE, FEMALE } gender;//Пол(самец / самка)
     int daysSinceBirth; // Дней с рождения
     int daysSinceLastCheck; // Дней с последней проверки ветеринаром
     bool isSick; // Болен ли животное
@@ -56,15 +64,15 @@ public:
         daysSinceBirth++;
     }
 };
-// class Loan
+//Класс Loan(Кредит)
 class Loan {
 public:
-    int amount;
-    int remaining;
-    int daysPassed;
+    int amount; //Сумма кредита
+    int remaining; // Остаток к оплате
+    int daysPassed;//Прошедшие дни
 
     Loan(int amt) : amount(amt), remaining(amt), daysPassed(0) {}
-
+    //calculateDailyPayment() - вычисляет ежедневный платеж
     int calculateDailyPayment() const {
         if (amount < 100) return remaining * 0.25;
         else if (amount < 1000) return remaining * 0.15;
@@ -72,7 +80,21 @@ public:
         return remaining * 0.02;
     }
 };
-// class enclosure
+//2. Класс Enclosure(Вольер)
+    //Характеристики:
+//
+        //Климатическая зона
+        //Вместимость(малый, средний, большой)
+        //Список животных
+        //Состояние чистоты
+        //Ежедневные расходы
+    //Основные методы :
+
+        //canAddAnimal() - проверяет возможность добавления животного
+        //addAnimal() / removeAnimal() - управление животными
+        //calculateCost() - вычисляет стоимость строительства
+        //breedAnimals() - размножение животных в вольере
+        //clean() - очистка вольера
 class Enclosure {
 public:
     Animal::Climate climate;
@@ -95,7 +117,7 @@ public:
         }
         dailyCost = calculateDailyCost();
     }
-
+    //canAddAnimal() - проверяет возможность добавления животного
     bool canAddAnimal(const Animal& animal) {
         if (animals.size() >= capacity) return false;
         if (animal.climate != climate) return false;
@@ -105,7 +127,7 @@ public:
         }
         return true;
     }
-
+    //addAnimal() / removeAnimal() - управление животными
     void addAnimal(const Animal& animal) {
         if (canAddAnimal(animal)) {
             animals.push_back(animal);
@@ -120,7 +142,7 @@ public:
             }
         }
     }
-
+    //calculateCost() - вычисляет стоимость строительства
     int calculateCost() const {
         int baseCost = 100;
         int cost = baseCost;
@@ -140,7 +162,7 @@ public:
         else if (sizeType == "большой") dailyCost *= 2;
         return max(dailyCost, 10);
     }
-
+    //clean() - очистка вольера
     void clean() {
         isClean = true;
     }
@@ -162,7 +184,7 @@ public:
     }
 
 
-
+    //breedAnimals() - размножение животных в вольере
     void breedAnimals() {
         cout << "\nВыберите двух животных для спаривания:\n";
         int index = 1;
@@ -233,15 +255,24 @@ public:
         }
     }
 };
-//class employee
+//Класс Employee(Сотрудник)
+//Типы сотрудников :
+    //Уборщик
+    //Ветеринар
+    //Кормилец
+//Характеристики :
+    //Имя, должность, зарплата
+    //Максимальное количество животных для обслуживания
+    //Оставшиеся действия за день
+    //Назначенные вольеры
 class Employee {
 public:
-    string name;
-    string position;
-    int salary;
-    int maxAnimals;
-    int currentAnimals;
-    int actionsLeft;
+    string name;//Имя
+    string position; //должность
+    int salary;//зарплата
+    int maxAnimals; //Максимальное количество животных для обслуживания
+    int currentAnimals; //Оставшиеся действия за день
+    int actionsLeft;//Назначенные вольеры
     list<Enclosure*> assignedEnclosures;
 
     Employee(string n, string pos, int sal, int max)
@@ -262,11 +293,21 @@ public:
         if (actionsLeft > 0) actionsLeft--;
     }
 };
-//class zoo
+//Класс Zoo(Зоопарк)
+//Основные компоненты :
+//Список вольеров
+//Список сотрудников
+//Список кредитов
+//Основные методы :
+//
+//nextDay() - обработка дневных событий
+//takeLoan() / payLoan() - управление кредитами
+//processDailyLoanPayments() - обработка ежедневных платежей
+//getTotalAnimals() - подсчет общего количества животных
 class Zoo {
 public:
     string name;
-    int money, food, popularity;
+    int money, food, popularity; //Финансы, еда, популярность
     int day;
     list<Enclosure> enclosures;
     list<Employee> employees;
@@ -1118,8 +1159,6 @@ void manageEmployees(Zoo& zoo) {
         cout << "Неверный выбор!\n";
     }
 }
-
-
 int main() {
     srand(time(0));
     system("chcp 1251 > nul");
@@ -1211,3 +1250,30 @@ int main() {
     cin.get();
     return 0;
 }
+//Основные меню :
+//Управление животными :
+//
+//Покупка / продажа животных
+//Просмотр списка животных
+//Размножение животных
+//Управление сотрудниками :
+//
+//Наем / увольнение сотрудников
+//Просмотр списка сотрудников
+//Управление вольерами :
+//
+//Строительство новых вольеров
+//Просмотр информации о вольерах
+//Управление ресурсами :
+//
+//Покупка еды
+//Заказ рекламы для повышения популярности
+//Управление кредитами :
+//
+//Взятие кредитов
+//Погашение кредитов
+//Следующий день :
+//
+//Автоматическая обработка событий дня
+//Начисление доходов от посетителей
+//Расходы на содержание
